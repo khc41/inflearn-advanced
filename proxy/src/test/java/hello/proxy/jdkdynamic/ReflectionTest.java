@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 
 @Slf4j
 public class ReflectionTest {
@@ -58,9 +59,22 @@ public class ReflectionTest {
         dynamicCall(methodCallB, target);
     }
 
+    @Test
+    void lambda() {
+        Hello target = new Hello();
+        dynamicCall2(target::callA);
+        dynamicCall2(target::callB);
+    }
+
     private void dynamicCall(Method method, Object target) throws Exception {
         log.info("start");
         Object result = method.invoke(target);
+        log.info("result={}", result);
+    }
+
+    private void dynamicCall2(Supplier<String> method) {
+        log.info("start");
+        String result = method.get();
         log.info("result={}", result);
     }
 
